@@ -1,0 +1,72 @@
+.manage-events-container {
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Frosted card for add event form */
+.add-event-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 25px 30px;
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  color: #222;
+}
+
+.add-event-card h3 {
+  grid-column: span 2;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-event-card input,
+.add-event-card textarea {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  color: #222;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-event-card textarea {
+  grid-column: span 2;
+}
+
+.add-event-card button {
+  grid-column: span 2;
+  padding: 12px 16px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.add-event-card button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .add-event-card {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .add-event-card textarea,
+  .add-event-card button {
+    grid-column: 1;
+  }
+}

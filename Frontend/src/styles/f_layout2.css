@@ -1,0 +1,28 @@
+.finance-page {
+  padding: 20px;
+}
+
+.finance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.finance-table th,
+.finance-table td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.finance-table th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
+
+.finance-table .totals {
+  background-color: #f0f0f0;
+}

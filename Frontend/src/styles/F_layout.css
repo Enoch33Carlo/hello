@@ -1,0 +1,42 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card.frosted {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+  width: 300px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #222;
+}
+
+.btn-primary {
+  padding: 8px 14px;
+  margin-right: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  padding: 8px 14px;
+  background-color: #6c757d;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
