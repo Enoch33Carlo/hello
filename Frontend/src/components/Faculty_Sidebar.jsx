@@ -1,37 +1,55 @@
 import React, { useState } from "react";
-import { Home, Users, Menu, X } from "lucide-react";
+import { Home, Users, BarChart, FileText, Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../styles/F_sidebar.css";
 
-export default function Faculty_Sidebar({ active, onSelect, isMobileOpen, toggleMobile }) {
+export default function Faculty_Sidebar({
+  active,
+  onSelect,
+  isMobileOpen,
+  toggleMobile,
+}) {
   const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
 
   const items = [
     {
       id: "f_dashboard",
       label: "Dashboard",
       icon: <Home size={20} />,
-      url: "http://localhost:5173/f_dashboard",
+      path: "/faculty/F_dash",
     },
     {
-      id: "Finance",
+      id: "finance",
       label: "Finance",
       icon: <Users size={20} />,
-      url: "http://localhost:5173/Finance",
+      path: "/faculty/Finance",
     },
     {
-       id: "",
-    }
+      id: "manage_events",
+      label: "Manage Events",
+      icon: <BarChart size={20} />,
+      path: "/faculty/Manage",
+    },
+    {
+      id: "report_generation",
+      label: "Report Generation",
+      icon: <FileText size={20} />,
+      path: "/faculty/Report",
+    },
   ];
 
   const handleClick = (item) => {
     onSelect?.(item.id);
     toggleMobile?.(false);
-    window.location.href = item.url; // 🔹 Open the page
+    navigate(item.path); // ✅ use React Router navigation instead of reloading
   };
 
   return (
     <>
-      {isMobileOpen && <div className="sidebar-overlay" onClick={toggleMobile}></div>}
+      {isMobileOpen && (
+        <div className="sidebar-overlay" onClick={toggleMobile}></div>
+      )}
 
       <aside
         className={`sidebar ${isOpen ? "open" : "collapsed"} ${
