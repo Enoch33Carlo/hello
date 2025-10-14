@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from "react";
 import "../styles/layout.css";
 
-export default function EventCard({ ev }) {
-  const [showForm, setShowForm] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  const [eventDetails, setEventDetails] = useState(null);
+export default function EventCardsRow() {
+  const [eventsData, setEventsData] = useState([]);
 
-  // Fetch event details
+  // Fetch events from public folder
   useEffect(() => {
     fetch("/events.json")
       .then((res) => res.json())
-      .then((data) => {
-        const found = data.find((item) => item.id === ev.id);
-        setEventDetails(found);
-      })
-      .catch((err) => console.error("Error loading event details:", err));
-  }, [ev.id]);
+      .then((data) => setEventsData(data.slice(0, 3))) // take first 3 events
+      .catch((err) => console.error("Error fetching events:", err));
+  }, []);
+
+  return (
+    <div className="event-cards-row">
+      {eventsData.map((ev) => (
+        <EventCard key={ev.id} ev={ev} />
+      ))}
+    </div>
+  );
+}
+
+function EventCard({ ev }) {
+  const [showForm, setShowForm] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const handleOpenForm = () => setShowForm(true);
   const handleCloseForm = () => setShowForm(false);
   const handleOpenDetails = () => setShowDetails(true);
   const handleCloseDetails = () => setShowDetails(false);
 
-  // 🆕 Registration handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,15 +60,6 @@ export default function EventCard({ ev }) {
     }
   };
 
-  const seatsLeftPercent =
-    eventDetails && eventDetails.totalSeats
-      ? Math.round(
-          ((eventDetails.totalSeats - eventDetails.registrations) /
-            eventDetails.totalSeats) *
-            100
-        )
-      : null;
-
   return (
     <>
       <div className="event-card">
@@ -74,117 +72,48 @@ export default function EventCard({ ev }) {
 
         <div className="event-card-body">
           <h4>{ev.title}</h4>
-          <div className="muted">
-            {ev.category} • {ev.date} • {ev.time}
-          </div>
-
-          <p className="small">
-            📍 <strong>Venue:</strong> {ev.venue || eventDetails?.venue || "N/A"}
-          </p>
-          <p className="small">
-            🌆 <strong>Place:</strong> {ev.location || eventDetails?.location || "N/A"}
-          </p>
-
-          {eventDetails && eventDetails.totalSeats && (
-            <p className="small seats-info">
-              🎟️ <strong>Seats Left:</strong> {seatsLeftPercent}% (
-              {eventDetails.totalSeats - eventDetails.registrations} of{" "}
-              {eventDetails.totalSeats})
-            </p>
-          )}
-
+          <div className="muted">{ev.category} • {ev.date} • {ev.time}</div>
+          <p className="small">📍 <strong>Venue:</strong> {ev.venue || "N/A"}</p>
+          <p className="small">🌆 <strong>Place:</strong> {ev.location || "N/A"}</p>
           <p className="small desc">{ev.description}</p>
 
           <div className="event-card-actions">
-            <button className="btn-primary" onClick={handleOpenForm}>
-              Register
-            </button>
-            <button className="btn-primary" onClick={handleOpenDetails}>
-              View Details
-            </button>
+            <button className="btn-primary" onClick={handleOpenForm}>Register</button>
+            <button className="btn-primary" onClick={handleOpenDetails}>View Details</button>
           </div>
         </div>
       </div>
 
-      {/* 🟢 Registration Modal */}
+      {/* Registration Modal */}
       {showForm && (
         <div className="modal-overlay" onClick={handleCloseForm}>
-          <div
-            className="modal-card"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h3>{ev.title}</h3>
-            <p className="muted">
-              {ev.category} • {ev.date} • {ev.time} • {ev.location}
-            </p>
-
             <form className="event-form" onSubmit={handleSubmit}>
-              <label>
-                Full Name
-                <input name="fullName" type="text" placeholder="Enter your name" required />
-              </label>
-
-              <label>
-                Email
-                <input name="email" type="email" placeholder="Enter your email" required />
-              </label>
-
-              <label>
-                Department
-                <input name="department" type="text" placeholder="Enter your department" />
-              </label>
-
-              <label>
-                Additional Info
-                <textarea name="message" placeholder="Any notes or message..." />
-              </label>
-
+              <label>Full Name<input name="fullName" type="text" required /></label>
+              <label>Email<input name="email" type="email" required /></label>
+              <label>Department<input name="department" type="text" /></label>
+              <label>Additional Info<textarea name="message" /></label>
               <div className="form-actions">
-                <button type="submit" className="btn-primary">
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={handleCloseForm}
-                >
-                  Cancel
-                </button>
+                <button type="submit" className="btn-primary">Submit</button>
+                <button type="button" className="btn-secondary" onClick={handleCloseForm}>Cancel</button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* 🔵 Event Details Modal */}
-      {showDetails && eventDetails && (
+      {/* Event Details Modal */}
+      {showDetails && (
         <div className="modal-overlay" onClick={handleCloseDetails}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h3>{eventDetails.title}</h3>
-            <p className="muted">
-              {eventDetails.category} • {eventDetails.date} • {eventDetails.time}
-            </p>
-            <p><strong>Location:</strong> {eventDetails.location}</p>
-            <p><strong>Venue:</strong> {eventDetails.venue}</p>
-            <p><strong>Description:</strong> {eventDetails.description}</p>
-            <p><strong>Registrations:</strong> {eventDetails.registrations}</p>
-            <p><strong>Total Seats:</strong> {eventDetails.totalSeats}</p>
-            <p>
-              <strong>Seats Left:</strong>{" "}
-              {eventDetails.totalSeats - eventDetails.registrations} (
-              {seatsLeftPercent}%)
-            </p>
-            <p><strong>Guests:</strong> {eventDetails.guests}</p>
-            <p><strong>Earnings:</strong> ₹{eventDetails.earnings}</p>
-
+            <h3>{ev.title}</h3>
+            <p>{ev.category} • {ev.date} • {ev.time}</p>
+            <p><strong>Venue:</strong> {ev.venue}</p>
+            <p><strong>Place:</strong> {ev.location}</p>
+            <p><strong>Description:</strong> {ev.description}</p>
             <div className="form-actions">
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleCloseDetails}
-              >
-                Close
-              </button>
+              <button type="button" className="btn-secondary" onClick={handleCloseDetails}>Close</button>
             </div>
           </div>
         </div>
