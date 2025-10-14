@@ -92,6 +92,7 @@ const handleViewAttendanceDetails = () => {
             <button className="btn-secondary" onClick={handleOpenAttendance}>
               Attendance
             </button>
+            
           </div>
         </div>
       </div>

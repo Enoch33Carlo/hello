@@ -14,7 +14,6 @@ export default function Finance() {
       .catch((err) => console.error("Error loading finance data:", err));
   }, []);
 
-  // Calculate total cash, online, and grand total
   const totalCash = financeData.reduce((sum, ev) => sum + ev.cashCollected, 0);
   const totalOnline = financeData.reduce(
     (sum, ev) => sum + ev.onlineCollected,
@@ -24,36 +23,50 @@ export default function Finance() {
 
   return (
     <div className="finance-page">
-      <h2>Finance Overview</h2>
+      <h2 className="finance-title">Finance Overview</h2>
 
-      <table className="finance-table">
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th>Cash Collected (₹)</th>
-            <th>Online Collected (₹)</th>
-            <th>Total (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {financeData.map((ev) => (
-            <tr key={ev.eventId}>
-              <td>{ev.eventName}</td>
-              <td>{ev.cashCollected.toLocaleString()}</td>
-              <td>{ev.onlineCollected.toLocaleString()}</td>
-              <td>{(ev.cashCollected + ev.onlineCollected).toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className="totals">
-            <td><strong>Total</strong></td>
-            <td><strong>₹{totalCash.toLocaleString()}</strong></td>
-            <td><strong>₹{totalOnline.toLocaleString()}</strong></td>
-            <td><strong>₹{grandTotal.toLocaleString()}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
+      <div className="finance-card-container">
+        {financeData.map((ev) => (
+          <div key={ev.eventId} className="finance-card">
+            <h3 className="event-name">{ev.eventName}</h3>
+
+            <div className="finance-details">
+              <div className="detail-item">
+                <span>💵 Cash Collected:</span>
+                <strong>₹{ev.cashCollected.toLocaleString()}</strong>
+              </div>
+              <div className="detail-item">
+                <span>💳 Online Collected:</span>
+                <strong>₹{ev.onlineCollected.toLocaleString()}</strong>
+              </div>
+              <div className="detail-item total">
+                <span>🧾 Total:</span>
+                <strong>
+                  ₹{(ev.cashCollected + ev.onlineCollected).toLocaleString()}
+                </strong>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="finance-summary">
+        <h3>Overall Totals</h3>
+        <div className="summary-grid">
+          <div className="summary-item">
+            <span>💵 Total Cash</span>
+            <strong>₹{totalCash.toLocaleString()}</strong>
+          </div>
+          <div className="summary-item">
+            <span>💳 Total Online</span>
+            <strong>₹{totalOnline.toLocaleString()}</strong>
+          </div>
+          <div className="summary-item grand-total">
+            <span>🧾 Grand Total</span>
+            <strong>₹{grandTotal.toLocaleString()}</strong>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

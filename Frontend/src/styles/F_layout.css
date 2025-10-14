@@ -1,42 +1,163 @@
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(6px);
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-card.frosted {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
+/* General layout */
+.dashboard-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f9fafb;
+  color: #000;
   padding: 20px;
-  width: 300px;
+  box-sizing: border-box;
+}
+
+/* Topbar with search */
+.topbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.search input {
+  width: 350px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  color: #000;
+}
+
+/* Event cards container */
+.events-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 24px;
+  padding: 10px;
+}
+
+/* Individual Event Card */
+.event-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  color: #000; /* Ensures all text is black */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 16px;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.event-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.event-details {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.event-detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+/* Message when no events found */
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 30px;
+}
+/* Layout Container */
+.dashboard-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Search Bar */
+.topbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.search input {
+  width: 350px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  color: #000;
+  background-color: #fff;
+}
+
+/* Event Card Grid */
+.events-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 24px;
+  padding: 10px;
+}
+
+/* Frosted Event Card */
+.event-card {
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  color: #222;
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  color: #000;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.btn-primary {
-  padding: 8px 14px;
-  margin-right: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
-.btn-secondary {
-  padding: 8px 14px;
-  background-color: #6c757d;
-  color: #fff;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+/* Event Title */
+.event-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+/* Event Details */
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-detail-item {
+  display: flex;
+  justify-content: space-between;
+  color: #000;
+  font-size: 16px;
+}
+
+/* No Results Message */
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: #444;
+  margin-top: 30px;
 }
