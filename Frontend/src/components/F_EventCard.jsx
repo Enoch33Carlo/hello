@@ -82,7 +82,20 @@ const handleViewAttendanceDetails = () => {
 
   return (
     <>
-      <div className="event-card">
+      <div className="event-card3">
+        {/* ✅ Image Section */}
+        {eventDetails?.image && (
+          <div
+            className="event-thumb"
+            style={{
+              backgroundImage: `url(${eventDetails.image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "90px",
+              borderRadius: "10px 10px 0 0",
+            }}
+          ></div>
+        )}
         <div className="event-card-body">
           <h4>{ev.title}</h4>
           <div className="event-card-actions">

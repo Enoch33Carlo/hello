@@ -35,7 +35,7 @@
 }
 
 /* Individual Event Card */
-.event-card {
+.event-card3 {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   border-radius: 14px;
@@ -46,7 +46,7 @@
   font-size: 16px;
 }
 
-.event-card:hover {
+.event-card3:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }

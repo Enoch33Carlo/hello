@@ -1,104 +1,160 @@
-/* === Finance Page Layout === */
 .finance-page {
-  padding: 30px 50px;
+  padding: 40px;
+  background: #ffffff; /* White background */
+  color: #000; /* Dark text */
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #1e293b, #111827);
-  color: #fff;
-  font-family: "Inter", sans-serif;
 }
 
-/* Title */
 .finance-title {
-  font-size: 26px;
-  font-weight: 700;
   text-align: center;
-  margin-bottom: 40px;
-  color: #e2e8f0;
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #222;
 }
 
-/* === Card Container === */
 .finance-card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  margin-bottom: 50px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
 }
 
-/* === Frosted Glass Card === */
 .finance-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 18px;
-  padding: 22px;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
 }
 
 .finance-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Event Name */
 .event-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: #f1f5f9;
+  font-size: 20px;
   margin-bottom: 15px;
+  color: #111;
 }
 
-/* Card Details */
-.finance-details {
+.finance-details .detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  color: #333;
+}
+
+.detail-item.total {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  padding-top: 8px;
+  font-weight: 600;
+}
+
+.btn-edit {
+  margin-top: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, #1e90ff, #6d6dff);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-edit:hover {
+  background: linear-gradient(135deg, #33a3ff, #7f7fff);
+}
+
+/* Edit section styles */
+.edit-section {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.detail-item {
+.edit-section label {
   display: flex;
   justify-content: space-between;
-  font-size: 15px;
-  color: #e2e8f0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 10px;
+  border-radius: 8px;
+  color: #222;
 }
 
-.detail-item.total {
+.edit-section input {
+  width: 100px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: #000;
+  text-align: right;
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: space-between;
   margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  color: #a3e635;
+}
+
+.btn-save,
+.btn-cancel {
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   font-weight: 600;
 }
 
-/* === Summary Section === */
+.btn-save {
+  background: linear-gradient(135deg, #24a35b, #43d77e);
+  color: white;
+}
+
+.btn-save:hover {
+  background: linear-gradient(135deg, #30b36a, #52e689);
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #a32020, #d24d4d);
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: linear-gradient(135deg, #b93232, #e85c5c);
+}
+
+/* Summary Section */
 .finance-summary {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(14px);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 30px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  margin-top: 40px;
+  color: #222;
 }
 
-.finance-summary h3 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #f8fafc;
-}
-
-/* Totals Grid */
 .summary-grid {
   display: flex;
   justify-content: center;
-  gap: 25px;
   flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .summary-item {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 16px 25px;
-  border-radius: 14px;
-  backdrop-fi
+  background: #f8f8f8;
+  padding: 15px 25px;
+  border-radius: 12px;
+  min-width: 180px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.summary-item.grand-total {
+  background: linear-gradient(135deg, #1e90ff, #6d6dff);
+  color: white;
+}

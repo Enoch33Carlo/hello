@@ -34,26 +34,33 @@ export default function RegisteredEvents() {
 
   return (
     <div className="registered-page">
-      {/* Header and Filters */}
-      <div className="header-section">
-        <h2>Registered Events</h2>
-        <div className="filters">
-          <input
-            type="text"
-            placeholder="Search by event or name..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-          />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="All">All</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Finished">Finished</option>
-          </select>
-        </div>
+  {/* Header and Filters */}
+  <div className="header-section">
+    <h2>Registered Events</h2>
+
+    <div className="filters">
+      <div className="search-box">
+        <i className="fas fa-search"></i>
+        <input
+          type="text"
+          placeholder="Search by event or name..."
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+        />
       </div>
+
+      <select
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+      >
+        <option value="All">All</option>
+        <option value="Ongoing">Ongoing</option>
+        <option value="Finished">Finished</option>
+      </select>
+    </div>
+  </div>
+
+
 
       {/* Cards Grid */}
       <div className="card-container">
@@ -85,7 +92,7 @@ export default function RegisteredEvents() {
                 <p className="event-user"><strong>{reg.fullName}</strong></p>
                 <p className="event-email">{reg.email}</p>
                 <p className="event-dept">{reg.department}</p>
-                {reg.message && <p className="event-message">“{reg.message}”</p>}
+                {/* {reg.message && <p className="event-message">“{reg.message}”</p>} */}
               </div>
             </div>
           ))
