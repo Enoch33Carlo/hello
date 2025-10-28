@@ -10,13 +10,13 @@ export default function Sidebar({ active, onSelect, isMobileOpen, toggleMobile }
       id: "dashboard",
       label: "Dashboard",
       icon: <Home size={20} />,
-      url: "http://localhost:5173/",
+      url: "http://localhost:5173/student",
     },
     {
       id: "registered",
       label: "Registered Events",
       icon: <Users size={20} />,
-      url: "http://localhost:5173/registered",
+      url: "http://localhost:5173/student/registered",
     },
   ];
 

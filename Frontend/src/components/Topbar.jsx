@@ -1,30 +1,3 @@
-// import React from "react";
-// import { Search, Bell, UserCircle, Menu } from "lucide-react";
-// import "../styles/navbar.css";
-
-// export default function Navbar({ toggleMobile }) {
-//   return (
-//     <nav className="navbar">
-//       <div className="navbar-left">
-//         <Menu size={22} className="menu-icon" onClick={toggleMobile} />
-//         <h2>Dashboard</h2>
-//       </div>
-
-//       <div className="navbar-center">
-//         <div className="search-bar">
-//           <Search size={18} />
-//           <input type="text" placeholder="Search anything..." />
-//         </div>
-//       </div>
-
-//       <div className="navbar-right">
-//         <button className="create-btn">Logout</button>
-//         <Bell size={20} className="nav-icon" />
-//         <UserCircle size={28} className="nav-avatar" />
-//       </div>
-//     </nav>
-//   );
-// }
 import React, { useState, useEffect, useRef } from "react";
 import { Search, Bell, UserCircle, Menu } from "lucide-react";
 import "../styles/navbar.css";
@@ -33,10 +6,20 @@ export default function Navbar({ toggleMobile }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [user, setUser] = useState(null);
+
   const notifRef = useRef();
   const profileRef = useRef();
 
-  // Fetch notifications
+  // 🟢 Load logged-in user from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // 🔔 Fetch notifications
   useEffect(() => {
     fetch("http://localhost:5000/api/notifications")
       .then((res) => res.json())
@@ -44,7 +27,7 @@ export default function Navbar({ toggleMobile }) {
       .catch((err) => console.error("Error loading notifications:", err));
   }, []);
 
-  // Close dropdowns when clicked outside
+  // ❌ Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -60,6 +43,12 @@ export default function Navbar({ toggleMobile }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // 🚪 Logout
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
 
   return (
     <nav className="navbar">
@@ -79,9 +68,11 @@ export default function Navbar({ toggleMobile }) {
 
       {/* 🔴 Right Section */}
       <div className="navbar-right">
-        <button className="create-btn">Logout</button>
+        <button className="create-btn" onClick={handleLogout}>
+          Logout
+        </button>
 
-        {/* 🔔 Notification Icon */}
+        {/* 🔔 Notification Dropdown */}
         <div className="dropdown-wrapper" ref={notifRef}>
           <div
             className="nav-icon-wrapper"
@@ -116,7 +107,7 @@ export default function Navbar({ toggleMobile }) {
           )}
         </div>
 
-        {/* 👤 User Icon */}
+        {/* 👤 User Profile Dropdown */}
         <div className="dropdown-wrapper" ref={profileRef}>
           <UserCircle
             size={28}
@@ -126,15 +117,16 @@ export default function Navbar({ toggleMobile }) {
               setShowNotifications(false);
             }}
           />
-          {showProfile && (
+
+          {showProfile && user && (
             <div className="dropdown profile-dropdown">
-              <p><strong>Enoch Carlo</strong></p>
-              <p className="muted">Project Manager</p>
+              <p><strong>{user.name}</strong></p>
+              <p className="muted">{user.designation || user.role}</p>
               <hr />
               <ul>
                 <li>My Profile</li>
                 <li>Settings</li>
-                <li>Logout</li>
+                <li onClick={handleLogout}>Logout</li>
               </ul>
             </div>
           )}

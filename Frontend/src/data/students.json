@@ -1,0 +1,18 @@
+[
+  {
+    "id": "stu001",
+    "name": "Enoch Carlo",
+    "email": "student1@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "designation": "Project Manager"
+  },
+  {
+    "id": "stu002",
+    "name": "John Doe",
+    "email": "student2@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "designation": "Member"
+  }
+]

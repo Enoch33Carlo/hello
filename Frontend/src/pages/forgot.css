@@ -1,0 +1,80 @@
+.forgot-bg {
+  min-height: 100vh;
+  width:210vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("https://images.unsplash.com/photo-1518770660439-4636190af475")
+    center/cover no-repeat;
+  background-color: rgba(0, 0, 0, 0.85);
+  background-blend-mode: darken;
+  backdrop-filter: blur(6px);
+  padding: 30px;
+}
+
+.forgot-card {
+  display: flex;
+  width: 85%;
+  max-width: 1050px;
+  height: 70vh;
+  background: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+}
+
+.forgot-left {
+  flex: 1;
+}
+.forgot-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.forgot-right {
+  flex: 1;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.forgot-right h2 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+.forgot-right p {
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.forgot-right input {
+  padding: 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 18px;
+}
+.forgot-right input::placeholder {
+  color: #bbb;
+}
+
+.forgot-btn {
+  background: black;
+  color: white;
+  padding: 12px 6px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.forgot-btn:hover {
+  background: #333;
+}
+
+.forgot-footer {
+  text-align: center;
+  margin-top: 15px;
+}

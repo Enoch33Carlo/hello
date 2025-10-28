@@ -71,7 +71,7 @@ export default function RegisteredEvents() {
             <div key={reg.id} className="event-card">
               <div className="event-image-wrapper">
                 <img
-                  src={reg.image || "/default-event.jpg"}
+                  src={reg.image || "../images/coding.jpg"}
                   alt={reg.eventTitle}
                   className="event-image"
                 />

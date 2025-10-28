@@ -1,0 +1,23 @@
+[
+  
+  {
+    "id": "fac001",
+    "name": "faculty 01",
+    "email": "faculty1@gmail.com",
+    "password": "admin123",
+    "role": "faculty",
+    "designation": "Head of Department"
+  }
+
+,
+   
+  {
+    "id": "fac002",
+    "name": "faculty 02",
+    "email": "faculty2@gmail.com",
+    "password": "admin123",
+    "role": "faculty",
+    "designation": "Head of Department"
+  }
+
+]
