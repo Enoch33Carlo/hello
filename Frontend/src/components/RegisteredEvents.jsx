@@ -20,6 +20,7 @@ export default function RegisteredEvents() {
       });
   }, []);
 
+
   if (loading) return <p className="loading">Loading registered events...</p>;
 
   // Filter registrations based on search text and status
@@ -70,11 +71,9 @@ export default function RegisteredEvents() {
           filtered.map((reg) => (
             <div key={reg.id} className="event-card">
               <div className="event-image-wrapper">
-                <img
-                  src={reg.image || "../images/coding.jpg"}
-                  alt={reg.eventTitle}
-                  className="event-image"
-                />
+               <img src={reg.image || "../images/coding.jpg"} alt={reg.eventTitle} className="event-image" />
+
+
                 <span
                   className={`status-tag ${
                     reg.status === "Ongoing"

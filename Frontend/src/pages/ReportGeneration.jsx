@@ -5,8 +5,8 @@ export default function ReportGeneration() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [report, setReport] = useState(null);
+  const [aiInsight, setAiInsight] = useState("");
 
-  // Fetch events
   useEffect(() => {
     fetch("/events.json")
       .then((res) => res.json())
@@ -14,37 +14,46 @@ export default function ReportGeneration() {
       .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
-  // Generate report for selected event
-  const handleGenerateReport = () => {
+  const handleGenerateReport = async () => {
     if (!selectedEvent) return;
 
-    // Simulate fetching attendance and finance
-    fetch("/attendanceData.json")
-      .then((res) => res.json())
-      .then((attendanceData) => {
-        const eventAttendance = attendanceData.find(
-          (a) => a.eventId === parseInt(selectedEvent)
-        );
+    try {
+      const attendanceRes = await fetch("/attendanceData.json");
+      const attendanceData = await attendanceRes.json();
 
-        const eventDetails = events.find(
-          (e) => e.id === parseInt(selectedEvent)
-        );
+      const eventAttendance = attendanceData.find(
+        (a) => a.eventId === parseInt(selectedEvent)
+      );
+      const eventDetails = events.find(
+        (e) => e.id === parseInt(selectedEvent)
+      );
 
-        const reportData = {
-          title: eventDetails.title,
-          category: eventDetails.category,
-          date: eventDetails.date,
-          totalSeats: eventDetails.totalSeats,
-          registrations: eventDetails.registrations,
-          earnings: eventDetails.earnings,
-          guests: eventDetails.guests,
-          totalStudents: eventAttendance ? eventAttendance.students.length : 0,
-          totalTeams: eventAttendance ? eventAttendance.teams.length : 0,
-        };
+      const reportData = {
+        title: eventDetails.title,
+        category: eventDetails.category,
+        date: eventDetails.date,
+        totalSeats: eventDetails.totalSeats,
+        registrations: eventDetails.registrations,
+        earnings: eventDetails.earnings,
+        guests: eventDetails.guests,
+        totalStudents: eventAttendance ? eventAttendance.students.length : 0,
+        totalTeams: eventAttendance ? eventAttendance.teams.length : 0,
+      };
 
-        setReport(reportData);
-      })
-      .catch((err) => console.error("Error generating report:", err));
+      setReport(reportData);
+
+      // 🔥 Call Gemini API
+      const aiRes = await fetch("http://localhost:5000/api/gemini-insight", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reportData }),
+      });
+
+      const aiData = await aiRes.json();
+      setAiInsight(aiData.insights || "No AI insights available.");
+    } catch (error) {
+      console.error("Error generating report:", error);
+    }
   };
 
   return (
@@ -81,6 +90,13 @@ export default function ReportGeneration() {
             <p><strong>Earnings:</strong> ₹{report.earnings}</p>
             <p><strong>Total Students Attended:</strong> {report.totalStudents}</p>
             <p><strong>Total Teams:</strong> {report.totalTeams}</p>
+
+            {aiInsight && (
+              <div className="ai-insight">
+                <h4>💡 AI Insights</h4>
+                <p>{aiInsight}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
