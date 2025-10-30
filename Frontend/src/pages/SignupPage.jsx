@@ -15,26 +15,29 @@ const SignupPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Get existing users
-    const key = role === "student" ? "students" : "faculty";
-    const existingUsers = JSON.parse(localStorage.getItem(key)) || [];
+  try {
+    const response = await fetch("http://localhost:5000/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...formData, role }),
+    });
 
-    // Check for duplicate email
-    if (existingUsers.some((u) => u.email === formData.email)) {
-      alert("User with this email already exists!");
-      return;
+    const text = await response.text();
+
+    if (response.ok) {
+      alert("✅ Signup successful! You can now login.");
+      window.location.href = "/";
+    } else {
+      alert(`❌ ${text}`);
     }
-
-    // Save new user
-    existingUsers.push(formData);
-    localStorage.setItem(key, JSON.stringify(existingUsers));
-
-    alert(`Signup successful as ${role}! You can now login.`);
-    window.location.href = "/login";
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error, please try again later.");
+  }
+};
 
   return (
     <div className="signup-bg">
