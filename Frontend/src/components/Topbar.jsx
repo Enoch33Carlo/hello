@@ -13,11 +13,18 @@ export default function Navbar({ toggleMobile }) {
 
   // 🟢 Load logged-in user from localStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const userData = JSON.parse(storedUser);
+
+    // Fetch latest user details from backend
+    fetch(`http://localhost:5000/api/user/${userData.email}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch((err) => console.error("Error fetching user details:", err));
+  }
+}, []);
+
 
   // 🔔 Fetch notifications
   useEffect(() => {
@@ -119,17 +126,18 @@ export default function Navbar({ toggleMobile }) {
           />
 
           {showProfile && user && (
-            <div className="dropdown profile-dropdown">
-              <p><strong>{user.name}</strong></p>
-              <p className="muted">{user.designation || user.role}</p>
-              <hr />
-              <ul>
-                <li>My Profile</li>
-                <li>Settings</li>
-                <li onClick={handleLogout}>Logout</li>
-              </ul>
-            </div>
-          )}
+  <div className="dropdown profile-dropdown">
+    <p><strong>{user.name}</strong></p>
+    <p className="muted">{user.role}</p>
+    <p className="muted">{user.email}</p>
+    <hr />
+    <ul>
+      <li>My Profile</li>
+      <li>Settings</li>
+      <li onClick={handleLogout}>Logout</li>
+    </ul>
+  </div>
+)}
         </div>
       </div>
     </nav>

@@ -58,6 +58,177 @@
   background-color: #0056b3;
   transform: translateY(-2px);
 }
+.manage-events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  gap: 50px;
+  background: #e6d7d7;
+  min-height: 100vh;
+  color: rgb(8, 6, 6);
+}
+
+.add-event-card {
+  background: lightgray;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 20px #fff;
+}
+
+.add-event-card input,
+.add-event-card textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.add-event-card button {
+  margin-top: 10px;
+  background: #00b894;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.add-event-card button:hover {
+  background: #019170;
+}
+
+/* Delete Section */
+.delete-event-section {
+  width: 95%;
+  max-width: 1100px;
+  background: #6e6868;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.delete-event-section h3 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #ff7675;
+}
+
+.event-delete-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  color: white;
+}
+
+.event-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.event-info1 {
+  text-align: left;
+  margin-bottom: 10px;
+  color:black;
+};
+
+.delete-btn {
+  background: #d63031;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background: #b71c1c;
+}
+.manage-events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 30px;
+  align-items: center;
+}
+
+.frost-card {
+  width: 90%;
+  max-width: 800px;
+  background: #fff;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 25px;
+  color: #fff;
+}
+
+.add-event-card input,
+.add-event-card textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.add-event-card button,
+.delete-btn {
+  background-color: #ff4757;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.add-event-card button:hover,
+.delete-btn:hover {
+  background-color: #ff6b81;
+}
+
+.event-delete-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  background: rgba(209, 209, 209, 0.3);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+}
+
+.event-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 
 @media (max-width: 768px) {
   .add-event-card {

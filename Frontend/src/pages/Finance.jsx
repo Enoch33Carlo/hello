@@ -1,142 +1,226 @@
-import React, { useState, useEffect } from "react";
-import "../styles/f_layout2.css";
+import React, { useEffect, useState } from "react";
+import Topbar from "../components/Faculty_Topbar";
+import "../styles/F_layout.css";
 
-export default function Finance() {
-  const [financeData, setFinanceData] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editForm, setEditForm] = useState({ cashCollected: "", onlineCollected: "" });
+export default function Dashboard() {
+  const [events, setEvents] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loadingId, setLoadingId] = useState(null);
 
-  // Fetch finance data
+  const [financeList, setFinanceList] = useState([]);
+  const [editingFinance, setEditingFinance] = useState(null);
+  const [editData, setEditData] = useState({ cashCollected: "", onlineCollected: "" });
+  const [selectedFinance, setSelectedFinance] = useState(null);
+
+  // ✅ Fetch events
   useEffect(() => {
-    fetch("/financeData.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load financeData.json");
-        return res.json();
-      })
-      .then((data) => setFinanceData(data))
-      .catch((err) => console.error("Error loading finance data:", err));
+    fetch("http://localhost:5000/api/events")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
-  const totalCash = financeData.reduce((sum, ev) => sum + ev.cashCollected, 0);
-  const totalOnline = financeData.reduce(
-    (sum, ev) => sum + ev.onlineCollected,
-    0
-  );
-  const grandTotal = totalCash + totalOnline;
+  // ✅ Fetch finance
+  const fetchFinance = () => {
+    fetch("http://localhost:5000/api/finance")
+      .then((res) => res.json())
+      .then((data) => setFinanceList(data))
+      .catch((err) => console.error("Error fetching finance:", err));
+  };
 
-  // Handle editing
-  const handleEdit = (index) => {
-    setEditIndex(index);
-    setEditForm({
-      cashCollected: financeData[index].cashCollected,
-      onlineCollected: financeData[index].onlineCollected,
+  useEffect(() => {
+    fetchFinance();
+  }, []);
+
+  // ✅ Filter search
+  const filteredEvents = events.filter((ev) =>
+    ev.title?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // ✅ Add to finance
+  const handleAddToFinance = async (event) => {
+    setLoadingId(event.id);
+    try {
+      const res = await fetch("http://localhost:5000/api/finance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventId: event.id,
+          eventName: event.title,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ " + data.message);
+        fetchFinance();
+      } else if (res.status === 409) {
+        alert("⚠️ Event already exists in finance.");
+      } else {
+        alert("❌ Failed to add event to finance.");
+      }
+    } catch (err) {
+      console.error("Error adding to finance:", err);
+      alert("❌ Server error.");
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // ✅ Edit finance
+  const handleEditFinance = (finance) => {
+    setEditingFinance(finance.id);
+    setEditData({
+      cashCollected: finance.cashCollected || "",
+      onlineCollected: finance.onlineCollected || "",
     });
   };
 
-  const handleCancel = () => {
-    setEditIndex(null);
-    setEditForm({ cashCollected: "", onlineCollected: "" });
+  // ✅ Save finance
+  const handleSaveFinance = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/finance/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editData),
+      });
+
+      if (res.ok) {
+        alert("✅ Finance updated successfully!");
+        setEditingFinance(null);
+        fetchFinance();
+      } else {
+        alert("❌ Update failed.");
+      }
+    } catch (err) {
+      console.error("Error updating finance:", err);
+      alert("❌ Server error.");
+    }
   };
 
-  const handleChange = (e) => {
-    setEditForm({ ...editForm, [e.target.name]: e.target.value });
-  };
-
-  const handleSave = (index) => {
-    const updatedData = [...financeData];
-    updatedData[index].cashCollected = parseInt(editForm.cashCollected) || 0;
-    updatedData[index].onlineCollected = parseInt(editForm.onlineCollected) || 0;
-    setFinanceData(updatedData);
-    setEditIndex(null);
-
-    // Optional: Save changes to server or JSON API here
-    console.log("Updated Finance Data:", updatedData[index]);
-  };
+  // ✅ Find finance entry for an event
+  const getFinanceForEvent = (eventId) =>
+    financeList.find((f) => f.eventId === eventId);
 
   return (
-    <div className="finance-page">
-      <h2 className="finance-title">Finance Overview</h2>
+    <div className="faculty-dashboard">
+      <Topbar />
 
-      <div className="finance-card-container">
-        {financeData.map((ev, index) => (
-          <div key={ev.eventId} className="finance-card">
-            <h3 className="event-name">{ev.eventName}</h3>
-
-            {editIndex === index ? (
-              <div className="edit-section">
-                <label>
-                  💵 Cash Collected:
-                  <input
-                    type="number"
-                    name="cashCollected"
-                    value={editForm.cashCollected}
-                    onChange={handleChange}
-                  />
-                </label>
-                <label>
-                  💳 Online Collected:
-                  <input
-                    type="number"
-                    name="onlineCollected"
-                    value={editForm.onlineCollected}
-                    onChange={handleChange}
-                  />
-                </label>
-
-                <div className="edit-buttons">
-                  <button className="btn-save" onClick={() => handleSave(index)}>
-                    💾 Save
-                  </button>
-                  <button className="btn-cancel" onClick={handleCancel}>
-                    ❌ Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="finance-details">
-                <div className="detail-item">
-                  <span>💵 Cash Collected:</span>
-                  <strong>₹{ev.cashCollected.toLocaleString()}</strong>
-                </div>
-                <div className="detail-item">
-                  <span>💳 Online Collected:</span>
-                  <strong>₹{ev.onlineCollected.toLocaleString()}</strong>
-                </div>
-                <div className="detail-item total">
-                  <span>🧾 Total:</span>
-                  <strong>
-                    ₹{(ev.cashCollected + ev.onlineCollected).toLocaleString()}
-                  </strong>
-                </div>
-                <button
-                  className="btn-edit"
-                  onClick={() => handleEdit(index)}
-                >
-                  ✏️ Edit
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
+      {/* 🔍 Search bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search event..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
-      <div className="finance-summary">
-        <h3>Overall Totals</h3>
-        <div className="summary-grid">
-          <div className="summary-item">
-            <span>💵 Total Cash</span>
-            <strong>₹{totalCash.toLocaleString()}</strong>
-          </div>
-          <div className="summary-item">
-            <span>💳 Total Online</span>
-            <strong>₹{totalOnline.toLocaleString()}</strong>
-          </div>
-          <div className="summary-item grand-total">
-            <span>🧾 Grand Total</span>
-            <strong>₹{grandTotal.toLocaleString()}</strong>
+      {/* 🗓 Events Section */}
+      <h2 className="section-title">Events</h2>
+      <div className="events-container">
+        {filteredEvents.map((event) => {
+          const finance = getFinanceForEvent(event.id);
+
+          return (
+            <div className="event-card" key={event.id}>
+              <img
+                src={
+                  event.image?.startsWith("http")
+                    ? event.image
+                    : `http://localhost:5000/uploads/${event.image}`
+                }
+                alt={event.title}
+                className="event-image"
+              />
+
+              <div className="event-info2">
+                <h4>{event.title}</h4>
+                <p>{event.category}</p>
+                <p>{event.date} — {event.time}</p>
+                <p>{event.location}</p>
+
+                {/* 🎯 Conditional Buttons */}
+                {finance ? (
+                  <>
+                    <button
+                      className="view-btn"
+                      onClick={() => setSelectedFinance(finance)}
+                    >
+                      👁 View Finance
+                    </button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEditFinance(finance)}
+                    >
+                      ✏️ Edit Finance
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="finance-btn"
+                    onClick={() => handleAddToFinance(event)}
+                    disabled={loadingId === event.id}
+                  >
+                    {loadingId === event.id ? "⏳ Adding..." : "💰 Add to Finance"}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 💰 Finance Edit Modal */}
+      {editingFinance && (
+        <div className="finance-modal">
+          <div className="modal-content">
+            <h3>Edit Finance Details</h3>
+            <label>Cash Collected</label>
+            <input
+              type="number"
+              value={editData.cashCollected}
+              onChange={(e) =>
+                setEditData({ ...editData, cashCollected: e.target.value })
+              }
+            />
+            <label>Online Collected</label>
+            <input
+              type="number"
+              value={editData.onlineCollected}
+              onChange={(e) =>
+                setEditData({ ...editData, onlineCollected: e.target.value })
+              }
+            />
+            <div className="modal-actions">
+              <button className="save-btn" onClick={() => handleSaveFinance(editingFinance)}>
+                💾 Save
+              </button>
+              <button className="cancel-btn" onClick={() => setEditingFinance(null)}>
+                ❌ Cancel
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* 👁 Finance View Modal */}
+      {selectedFinance && (
+        <div className="finance-modal">
+          <div className="modal-content">
+            <h3>Finance Details</h3>
+            <p><b>Event Name:</b> {selectedFinance.eventName}</p>
+            <p><b>Cash Collected:</b> ₹{selectedFinance.cashCollected}</p>
+            <p><b>Online Collected:</b> ₹{selectedFinance.onlineCollected}</p>
+            <p><b>Total:</b> ₹{Number(selectedFinance.cashCollected || 0) + Number(selectedFinance.onlineCollected || 0)}</p>
+            <div className="modal-actions">
+              <button className="cancel-btn" onClick={() => setSelectedFinance(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

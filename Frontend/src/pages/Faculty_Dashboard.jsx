@@ -7,42 +7,46 @@ export default function Dashboard() {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState("");
 
-  // Fetch events from events.json
+  // ✅ Fetch events from backend
   useEffect(() => {
-    fetch("/events.json")
+    fetch("http://localhost:5000/api/events")
       .then((res) => res.json())
       .then((data) => setEvents(data))
-      .catch((err) => console.error("Error loading events:", err));
+      .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
-  // Filter events by search query
+  // ✅ Filter events by search query
   const filteredEvents = events.filter((ev) =>
     ev.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="dashboard-container">
-      {/* 🔹 Topbar with search */}
-      <header className="topbar">
-        <div className="search">
-          <input
-            placeholder="Search for events..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </header>
+    <div className="faculty-dashboard">
 
-      {/* 🔹 Events list below search bar */}
+      
+
+      {/* 🔹 Events list */}
       <div className="events-container">
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((ev) => (
-            <EventCard key={ev.id} ev={ev} />
-          ))
-        ) : (
-          <p className="no-results">No events found.</p>
-        )}
+       {events.map((event) => (
+              <div className="event-card" key={event.id}>
+                <img
+              src={event.image.startsWith("http") ? event.image : `http://localhost:5000/uploads/${event.image}`}
+                         alt={event.title}
+                       className="event-image"
+          />
+
+                <div className="event-info2">
+                  <h4 >{event.title}</h4>
+
+                  <p>{event.category}</p>
+                  <p>{event.date} — {event.time}</p>
+                  <p>{event.location}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+      
       </div>
-    </div>
+    
   );
 }

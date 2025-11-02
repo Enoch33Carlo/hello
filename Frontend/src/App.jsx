@@ -9,6 +9,7 @@ import Finance from "./pages/Finance";
 import ManageEvents from "./pages/ManageEvents";
 import ReportGeneration from "./pages/ReportGeneration";
 import "./styles/dashboard.css";
+import AttendanceSimulator from "./pages/AttendanceSimulator";
 import Login from "./pages/Login";
 import SignupPage from "./pages/SignupPage";
 import ForgotPassword from "./pages/ForgotPassword";
