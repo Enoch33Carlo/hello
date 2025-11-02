@@ -1,127 +1,211 @@
 
 import React, { useState, useEffect } from "react";
-import "./eventcard.css";
+import "../styles/F_layout.css";
 
-export default function EventCardsRow() {
-  const [eventsData, setEventsData] = useState([]);
-
-  useEffect(() => {
-  const fetchEvents = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/events");
-      const data = await res.json();
-
-      if (Array.isArray(data)) {
-        setEventsData(data);
-      } else {
-        console.error("Unexpected data format:", data);
-      }
-    } catch (err) {
-      console.error("Error fetching events:", err);
-    }
-  };
-
-  fetchEvents();
-}, []);
-
-
-
-
-  return (
-    <div className="event-cards-row">
-      {eventsData.map((ev) => (
-        <EventCard key={ev.id} ev={ev} />
-      ))}
-    </div>
-  );
-}
-
-function EventCard({ ev }) {
-  const [showForm, setShowForm] = useState(false);
+export default function EventCard({ ev }) {
   const [showDetails, setShowDetails] = useState(false);
+  const [showAttendance, setShowAttendance] = useState(false);
+  const [attendance, setAttendance] = useState(null);
+  const [attendanceDetails, setAttendanceDetails] = useState(null);
+  const [eventDetails, setEventDetails] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // ✅ Fetch event details when component loads
+  useEffect(() => {
+    fetch("/events.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load events.json");
+        return res.json();
+      })
+      .then((data) => {
+        const found = data.find((e) => e.id === ev.id);
+        setEventDetails(found);
+      })
+      .catch((err) => console.error("Error loading event details:", err));
+  }, [ev.id]);
 
-    const formData = {
-      fullName: e.target.fullName.value,
-      email: e.target.email.value,
-      department: e.target.department.value,
-      message: e.target.message.value,
-      eventTitle: ev.title,
-    };
+  // ✅ Event modal handlers
+  const handleOpenDetails = () => setShowDetails(true);
+  const handleCloseDetails = () => setShowDetails(false);
 
-    try {
-      const res = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        alert("✅ Registered successfully!");
-        setShowForm(false);
-      } else {
-        const data = await res.json();
-        alert("❌ Error: " + (data.error || "Registration failed"));
-      }
-    } catch (error) {
-      alert("❌ Could not connect to server.");
-    }
+  // ✅ Attendance summary fetch
+  const handleOpenAttendance = () => {
+    fetch("/attendance.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load attendance.json");
+        return res.json();
+      })
+      .then((data) => {
+        const record = data.find((a) => a.eventId === ev.id);
+        setAttendance(record);
+        setShowAttendance(true);
+        setAttendanceDetails(null);
+      })
+      .catch((err) => console.error("Error loading attendance:", err));
   };
+
+  const handleCloseAttendance = () => setShowAttendance(false);
+
+// ✅ Attendance detail fetch (corrected)
+const handleViewAttendanceDetails = () => {
+  fetch("/attendanceData.json")
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to load attendanceData.json");
+      return res.json();
+    })
+    .then((data) => {
+      // Find the attendance details for the current event
+      const record = data.find((item) => item.eventId === ev.id);
+
+      if (!record) {
+        throw new Error(`No attendance details found for event ID: ${ev.id}`);
+      }
+
+      setAttendanceDetails(record);
+    })
+    .catch((err) => {
+      console.error("Error loading attendance details:", err);
+      setAttendanceDetails({ students: [], teams: [] }); // prevent crash
+    });
+};
+
+ 
+
+
+  const seatsLeftPercent =
+    eventDetails && eventDetails.totalSeats
+      ? Math.round(
+          ((eventDetails.totalSeats - eventDetails.registrations) /
+            eventDetails.totalSeats) *
+            100
+        )
+      : null;
 
   return (
     <>
-      <div className="event-card2">
-        <div className="event-card-left">
+      <div className="event-card3">
+        {/* ✅ Image Section */}
+        {eventDetails?.image && (
           <div
             className="event-thumb"
-            style={{ backgroundImage: `url(${ev.image || ""})` }}
-          />
-        </div>
-
+            style={{
+              backgroundImage: `url(${eventDetails.image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "90px",
+              borderRadius: "10px 10px 0 0",
+            }}
+          ></div>
+        )}
         <div className="event-card-body">
           <h4>{ev.title}</h4>
-          <div className="muted">{ev.category} • {ev.date} • {ev.time}</div>
-          <p className="small">📍 <strong>Venue:</strong> {ev.venue || "N/A"}</p>
-          <p className="small">🌆 <strong>Place:</strong> {ev.location || "N/A"}</p>
-          <p className="small desc">{ev.description}</p>
-
           <div className="event-card-actions">
-            <button className="btn-primary" onClick={() => setShowForm(true)}>Register</button>
-            <button className="btn-primary" onClick={() => setShowDetails(true)}>View Details</button>
+            <button className="btn-primary" onClick={handleOpenDetails}>
+              View Details
+            </button>
+            <button className="btn-secondary" onClick={handleOpenAttendance}>
+              Attendance
+            </button>
+            
           </div>
         </div>
       </div>
 
-      {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h3>{ev.title}</h3>
-            <form className="event-form" onSubmit={handleSubmit}>
-              <label>Full Name<input name="fullName" type="text" required /></label>
-              <label>Email<input name="email" type="email" required /></label>
-              <label>Department<input name="department" type="text" /></label>
-              <label>Additional Info<textarea name="message" /></label>
-              <div className="form-actions">
-                <button type="submit" className="btn-primary">Submit</button>
-                <button type="button" className="btn-secondary" onClick={() => setShowForm(false)}>Cancel</button>
-              </div>
-            </form>
-          </div>
+    {showAttendance && (
+  <div className="modal-overlay" onClick={handleCloseAttendance}>
+    <div
+      className="modal-card frosted"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>{ev.title} - Attendance</h3>
+
+      {/* Fetch attendance summary */}
+      {attendance === null && (
+        <p className="muted">Loading attendance summary...</p>
+      )}
+
+      {attendance && (
+        <>
+          <p>
+            <strong>Total Students:</strong> {attendance.students}
+          </p>
+          <p>
+            <strong>Total Teams:</strong> {attendance.teams}
+          </p>
+
+          {!attendanceDetails && (
+            <button
+              className="btn-primary"
+              onClick={handleViewAttendanceDetails}
+            >
+              View Details
+            </button>
+          )}
+        </>
+      )}
+
+      {/* Attendance details */}
+      {attendanceDetails && (
+        <div className="attendance-details">
+          <h4>Students:</h4>
+          <ul>
+            {attendanceDetails.students.map((name, index) => (
+              <li key={index}>{name}</li>
+            ))}
+          </ul>
+
+          <h4>Teams:</h4>
+          {attendanceDetails.teams.map((team, index) => (
+            <div key={index} className="team-block">
+              <strong>{team.teamName}:</strong>
+              <ul>
+                {team.members.map((member, i) => (
+                  <li key={i}>{member}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       )}
 
-      {showDetails && (
-        <div className="modal-overlay" onClick={() => setShowDetails(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h3>{ev.title}</h3>
-            <p>{ev.category} • {ev.date} • {ev.time}</p>
-            <p><strong>Venue:</strong> {ev.venue}</p>
-            <p><strong>Place:</strong> {ev.location}</p>
-            <p><strong>Description:</strong> {ev.description}</p>
+      <div className="form-actions">
+        <button className="btn-secondary" onClick={handleCloseAttendance}>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+      {/* Event Details Modal */}
+      {showDetails && eventDetails && (
+        <div className="modal-overlay" onClick={handleCloseDetails}>
+          <div
+            className="modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>{eventDetails.title}</h3>
+            <p className="muted">
+              {eventDetails.category} • {eventDetails.date} • {eventDetails.time}
+            </p>
+            <p><strong>Location:</strong> {eventDetails.location}</p>
+            <p><strong>Venue:</strong> {eventDetails.venue}</p>
+            <p><strong>Description:</strong> {eventDetails.description}</p>
+            <p><strong>Registrations:</strong> {eventDetails.registrations}</p>
+            <p><strong>Total Seats:</strong> {eventDetails.totalSeats}</p>
+            <p>
+              <strong>Seats Left:</strong>{" "}
+              {eventDetails.totalSeats - eventDetails.registrations} (
+              {seatsLeftPercent}%)
+            </p>
+            <p><strong>Guests:</strong> {eventDetails.guests}</p>
+            <p><strong>Earnings:</strong> ₹{eventDetails.earnings}</p>
+
             <div className="form-actions">
-              <button type="button" className="btn-secondary" onClick={() => setShowDetails(false)}>Close</button>
+              <button className="btn-secondary" onClick={handleCloseDetails}>
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -129,4 +213,3 @@ function EventCard({ ev }) {
     </>
   );
 }
-

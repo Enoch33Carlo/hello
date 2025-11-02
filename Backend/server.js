@@ -13,11 +13,13 @@ import path from "path";
 import geminiRoute from "./routes/geminiRoute.js";
 import { createServer } from "http";  // <-- add this
 import { Server } from "socket.io";   // <-- add this
+import RegistrationRoutes from "./routes/RegistrationRoutes.js";
 
 dotenv.config();
 
 const app = express();
 const server = createServer(app); // <-- create http server for socket.io
+app.use("/api/register", RegistrationRoutes);
 
 const io = new Server(server, {
   cors: { origin: "*" },

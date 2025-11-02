@@ -104,7 +104,7 @@ export default function Dashboard() {
 
   return (
     <div className="faculty-dashboard">
-      <Topbar />
+     
 
       {/* 🔍 Search bar */}
       <div className="search-bar">
