@@ -4,6 +4,7 @@ export default function ReportGeneration() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
 
+  // ✅ Fetch events once
   useEffect(() => {
     fetch("http://localhost:5000/api/events")
       .then((res) => res.json())
@@ -11,39 +12,49 @@ export default function ReportGeneration() {
       .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
+  // ✅ Handle PDF generation
   const handleGeneratePDF = async () => {
     if (!selectedEvent) {
       alert("Please select an event");
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/reports/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventId: selectedEvent }),
-    });
+    try {
+      const res = await fetch("http://localhost:6000/api/reports/generate", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ eventId: selectedEvent }),
+});
 
-    if (!res.ok) {
+      if (!res.ok) throw new Error("Report generation failed");
+
+      // ✅ Convert to a downloadable PDF
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `EventReport_${selectedEvent}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating report:", error);
       alert("Error generating report");
-      return;
     }
-
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `EventReport_${selectedEvent}.pdf`;
-    a.click();
   };
 
   return (
     <div style={{ padding: "40px", textAlign: "center" }}>
-      <h2>AI-Based Event Report Generator</h2>
+      <h2>📊 AI-Based Event Report Generator</h2>
 
       <select
         value={selectedEvent}
         onChange={(e) => setSelectedEvent(e.target.value)}
-        style={{ padding: "10px", margin: "10px" }}
+        style={{
+          padding: "10px",
+          margin: "10px",
+          width: "250px",
+          borderRadius: "5px",
+        }}
       >
         <option value="">Select an Event</option>
         {events.map((ev) => (
@@ -53,6 +64,7 @@ export default function ReportGeneration() {
         ))}
       </select>
 
+      <br />
       <button
         onClick={handleGeneratePDF}
         style={{
@@ -64,7 +76,7 @@ export default function ReportGeneration() {
           cursor: "pointer",
         }}
       >
-        Generate AI Report (PDF)
+        Generate Report
       </button>
     </div>
   );

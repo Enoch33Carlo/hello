@@ -4,6 +4,7 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
 import db from "../db.js";
+import cors from "cors";
 
 const router = express.Router();
 
@@ -99,4 +100,4 @@ router.post("/generate", async (req, res) => {
   }
 });
 
-export default router;
+export default router; 
