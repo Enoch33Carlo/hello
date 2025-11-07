@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Event Analytics & Reports</h1>
+  </header>
+  <main>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search events by name..." oninput="filter()" />
+    </div>
+    <ul id="event-list" class="card-list">
+      {% for e in events %}
+      <li class="card">
+        <div class="card-body">
+          <div class="card-title">{{ e.title }}</div>
+          <div class="card-sub">{{ e.category }} • {{ e.date }} • {{ e.location }}</div>
+          <a class="btn" href="/events/{{ e.id }}">Open report</a>
+        </div>
+      </li>
+      {% else %}
+      <li>No events found.</li>
+      {% endfor %}
+    </ul>
+  </main>
+  <script>
+    function filter(){
+      const q = (document.getElementById('search').value || '').toLowerCase();
+      const items = document.querySelectorAll('#event-list .card');
+      items.forEach(li => {
+        const title = li.querySelector('.card-title').textContent.toLowerCase();
+        li.style.display = title.includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

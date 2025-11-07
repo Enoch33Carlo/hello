@@ -4,44 +4,40 @@ export default function ReportGeneration() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState("");
 
-  // ✅ Fetch events once
-  useEffect(() => {
-    fetch("http://localhost:5000/api/events")
-      .then((res) => res.json())
-      .then((data) => setEvents(data))
-      .catch((err) => console.error("Error fetching events:", err));
-  }, []);
+ useEffect(() => {
+  fetch("/api/events")
+    .then((res) => res.json())
+    .then((data) => setEvents(data))
+    .catch((err) => console.error("Error fetching events:", err));
+}, []);
 
-  // ✅ Handle PDF generation
-  const handleGeneratePDF = async () => {
-    if (!selectedEvent) {
-      alert("Please select an event");
-      return;
-    }
+const handleGeneratePDF = async () => {
+  if (!selectedEvent) {
+    alert("Please select an event");
+    return;
+  }
+  try {
+    const res = await fetch("/api/reports/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventId: Number(selectedEvent) }),
+    });
+    if (!res.ok) throw new Error("Report generation failed");
 
-    try {
-      const res = await fetch("http://localhost:6000/api/reports/generate", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ eventId: selectedEvent }),
-});
-
-      if (!res.ok) throw new Error("Report generation failed");
-
-      // ✅ Convert to a downloadable PDF
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `EventReport_${selectedEvent}.pdf`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error generating report:", error);
-      alert("Error generating report");
-    }
-  };
-
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `EventReport_${selectedEvent}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error generating report:", error);
+    alert("Error generating report");
+  }
+};
   return (
     <div style={{ padding: "40px", textAlign: "center" }}>
       <h2>📊 AI-Based Event Report Generator</h2>

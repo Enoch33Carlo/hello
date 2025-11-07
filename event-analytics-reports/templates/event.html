@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ event.event_title }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <a class="back" href="/">← Back</a>
+    <h1>{{ event.event_title }}</h1>
+  </header>
+  <main>
+    <section class="grid">
+      <div class="panel">
+        <h2>Details</h2>
+        <div class="props">
+          <div><span>Category</span><b>{{ event.category }}</b></div>
+          <div><span>Date</span><b>{{ event.date }}</b></div>
+          <div><span>Time</span><b>{{ event.time }}</b></div>
+          <div><span>Location</span><b>{{ event.location }}</b></div>
+          <div><span>Venue</span><b>{{ event.venue }}</b></div>
+          <div><span>Payment</span><b>{{ event.payment }}</b></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Key Metrics</h2>
+        <div class="kpis">
+          <div class="kpi"><span>Cash</span><b>{{ analytics.kpis.cash }}</b></div>
+          <div class="kpi"><span>Online</span><b>{{ analytics.kpis.online }}</b></div>
+          <div class="kpi"><span>Total</span><b>{{ analytics.kpis.total }}</b></div>
+          <div class="kpi"><span>Registrations</span><b>{{ analytics.kpis.registrations }}</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Summary</h2>
+      <p>{{ analytics.summary or analytics.raw }}</p>
+    </section>
+
+    {% if analytics.insights %}
+    <section class="panel">
+      <h2>Insights</h2>
+      <ul>
+        {% for ins in analytics.insights %}
+        <li>{{ ins }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Registrations</h2>
+        <a class="btn" href="/events/{{ event.event_id }}/report.pdf" target="_blank">Download PDF</a>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Reg Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in registrations %}
+            <tr>
+              <td>{{ r.registration_id }}</td>
+              <td>{{ r.studentName }}</td>
+              <td>{{ r.studentEmail }}</td>
+              <td>{{ r.studentDept }}</td>
+              <td>{{ r.regDate }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No registrations</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

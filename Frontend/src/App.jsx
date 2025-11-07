@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route ,Navigate} from "react-router-dom";
 import StudentLayout from "./layouts/StudentLayout";
 import FacultyLayout from "./layouts/FacultyLayout";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import SignupPage from "./pages/SignupPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerificationCode from "./pages/VerificationCode";
+import ExternalRedirect from "./ExternalRedirect";
 
 export default function App() {
   return (
@@ -23,6 +24,11 @@ export default function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verification-code" element={<VerificationCode />} />
+
+        <Route
+  path="/report_generation"
+  element={<ExternalRedirect url="http://0.0.0.0:8000/" />}
+/>
 
         {/* Student Module */}
         <Route path="/Student" element={<StudentLayout />}>

@@ -32,11 +32,13 @@ export default function Faculty_Sidebar({
       path: "/faculty/Manage",
     },
     {
-      id: "report_generation",
-      label: "Report Generation",
-      icon: <FileText size={20} />,
-      path: "/faculty/Report",
-    },
+  id: "report_generation",
+  label: "Report Generation",
+  icon: <FileText size={20} />,
+  path: "/report_generation",
+  external: true
+}
+
   ];
 
   const handleClick = (item) => {
