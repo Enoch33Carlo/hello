@@ -17,7 +17,9 @@
     <ul id="event-list" class="card-list">
       {% for e in events %}
       <li class="card">
-        <div class="card-body">
+        <div class="card-body"> <div className="event-card" key={event.id}></div>
+        <img src="http://localhost:5000/uploads/{{ e.image }}" alt="{{ e.title }}" class="event-image">
+
           <div class="card-title">{{ e.title }}</div>
           <div class="card-sub">{{ e.category }} • {{ e.date }} • {{ e.location }}</div>
           <a class="btn" href="/events/{{ e.id }}">Open report</a>

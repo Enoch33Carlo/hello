@@ -6,7 +6,7 @@
 
 /* Frosted card for add event form */
 .add-event-card {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(186, 224, 191, 0.25);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 25px 30px;
@@ -30,7 +30,7 @@
   padding: 12px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(235, 217, 217, 0.6);
   color: #222;
   font-size: 0.95rem;
   width: 100%;
@@ -43,15 +43,18 @@
 
 .add-event-card button {
   grid-column: span 2;
-  padding: 12px 16px;
-  background-color: #007bff;
+  padding: 12px 20px;
+  
   color: #fff;
-  font-weight: bold;
-  border-radius: 12px;
+  font-weight: 600;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+  transition: all 0.25s ease;
+  background-color: #163e88;
 }
 
 .add-event-card button:hover {
@@ -68,44 +71,83 @@
   min-height: 100vh;
   color: rgb(8, 6, 6);
 }
-
 .add-event-card {
-  background: lightgray;
-  padding: 30px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 600px;
+  background: #ffffff;
+  padding: 32px 40px;
+  border-radius: 20px;
+  width: 100%;
+  /* max-width: 500px; */
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 4px 20px #fff;
+  gap: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Add a soft hover lift */
+.add-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings */
+.add-event-card h2 {
+  font-size: 1.6rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* Input fields */
 .add-event-card input,
+.add-event-card select,
 .add-event-card textarea {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 14px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fafafa;
 }
 
+/* Input focus effect */
+.add-event-card input:focus,
+.add-event-card select:focus,
+.add-event-card textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  background: #fff;
+}
+
+/* Button styling */
 .add-event-card button {
-  margin-top: 10px;
-  background: #00b894;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  cursor: pointer;
+  align-self: center;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #007bff, #0056d2);
   color: white;
-  font-weight: bold;
-  transition: background 0.3s;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
 .add-event-card button:hover {
-  background: #019170;
+  background: linear-gradient(135deg, #0056d2, #003ea8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.35);
 }
+
+.add-event-card button:active {
+  transform: translateY(0);
+}
+
 
 /* Delete Section */
 .delete-event-section {
@@ -175,7 +217,7 @@
 .frost-card {
   width: 105%;
  
-  background: rgb(245, 238, 236);
+  background: rgb(253, 246, 244);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);

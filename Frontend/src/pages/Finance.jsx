@@ -147,13 +147,14 @@ export default function Dashboard() {
                       className="view-btn"
                       onClick={() => setSelectedFinance(finance)}
                     >
-                      👁 View Finance
+                       View Finance
                     </button>
+                    <p>  </p>
                     <button
                       className="edit-btn"
                       onClick={() => handleEditFinance(finance)}
                     >
-                      ✏️ Edit Finance
+                       Edit Finance
                     </button>
                   </>
                 ) : (
@@ -194,10 +195,10 @@ export default function Dashboard() {
             />
             <div className="modal-actions">
               <button className="save-btn" onClick={() => handleSaveFinance(editingFinance)}>
-                💾 Save
+                 Save
               </button>
               <button className="cancel-btn" onClick={() => setEditingFinance(null)}>
-                ❌ Cancel
+                Cancel
               </button>
             </div>
           </div>

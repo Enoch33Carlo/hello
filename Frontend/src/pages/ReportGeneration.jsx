@@ -1,79 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Topbar from "../components/Faculty_Topbar";
+import EventCard from "../components/F_EventCard";  
+import "../styles/F_layout.css";
 
-export default function ReportGeneration() {
+export default function Dashboard() {
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState("");
+  const [search, setSearch] = useState("");
 
- useEffect(() => {
-  fetch("/api/events")
-    .then((res) => res.json())
-    .then((data) => setEvents(data))
-    .catch((err) => console.error("Error fetching events:", err));
-}, []);
+  // ✅ Fetch events from backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Error fetching events:", err));
+  }, []);
 
-const handleGeneratePDF = async () => {
-  if (!selectedEvent) {
-    alert("Please select an event");
-    return;
-  }
-  try {
-    const res = await fetch("/api/reports/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventId: Number(selectedEvent) }),
-    });
-    if (!res.ok) throw new Error("Report generation failed");
+  // ✅ Filter events by search query
+  const filteredEvents = events.filter((ev) =>
+    ev.title?.toLowerCase().includes(search.toLowerCase())
+  );
 
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `EventReport_${selectedEvent}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Error generating report:", error);
-    alert("Error generating report");
-  }
-};
   return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h2>📊 AI-Based Event Report Generator</h2>
+    <div className="faculty-dashboard">
 
-      <select
-        value={selectedEvent}
-        onChange={(e) => setSelectedEvent(e.target.value)}
-        style={{
-          padding: "10px",
-          margin: "10px",
-          width: "250px",
-          borderRadius: "5px",
-        }}
-      >
-        <option value="">Select an Event</option>
-        {events.map((ev) => (
-          <option key={ev.id} value={ev.id}>
-            {ev.title}
-          </option>
-        ))}
-      </select>
+      
 
-      <br />
-      <button
-        onClick={handleGeneratePDF}
-        style={{
-          padding: "10px 20px",
-          background: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Generate Report
-      </button>
-    </div>
+      {/* 🔹 Events list */}
+      <div className="events-container">
+       {events.map((event) => (
+              <div className="event-card" key={event.id}>
+                <img
+              src={event.image.startsWith("http") ? event.image : `http://localhost:5000/uploads/${event.image}`}
+                         alt={event.title}
+                       className="event-image"
+          />
+
+                <div className="event-info2">
+                  <h4 >{event.title}</h4>
+
+                  <p>{event.category}</p>
+                  <p>{event.date} — {event.time}</p>
+                  <p>{event.location}</p>
+                  <a class="btn" href="http://0.0.0.0:8000/events/7">Open report</a>
+
+                </div>
+              </div>
+            ))}
+          </div>
+      
+      </div>
+    
   );
 }

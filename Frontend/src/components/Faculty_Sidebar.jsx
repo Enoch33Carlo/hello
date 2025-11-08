@@ -35,7 +35,7 @@ export default function Faculty_Sidebar({
   id: "report_generation",
   label: "Report Generation",
   icon: <FileText size={20} />,
-  path: "/report_generation",
+  path: "/faculty/report",
   external: true
 }
 
