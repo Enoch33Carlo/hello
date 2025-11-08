@@ -49,6 +49,8 @@ export default function Faculty_Sidebar({
 
   return (
     <>
+      
+ 
       {isMobileOpen && (
         <div className="sidebar-overlay" onClick={toggleMobile}></div>
       )}

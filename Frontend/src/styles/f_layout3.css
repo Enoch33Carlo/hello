@@ -64,7 +64,7 @@
   align-items: center;
   padding: 30px;
   gap: 50px;
-  background: #e6d7d7;
+  background: #fffafa;
   min-height: 100vh;
   color: rgb(8, 6, 6);
 }
@@ -120,7 +120,7 @@
 .delete-event-section h3 {
   margin-bottom: 20px;
   text-align: center;
-  color: #ff7675;
+  color: #790f0f;
 }
 
 .event-delete-grid {
@@ -173,13 +173,13 @@
 }
 
 .frost-card {
-  width: 90%;
-  max-width: 800px;
-  background: #fff;
+  width: 105%;
+ 
+  background: rgb(245, 238, 236);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  padding: 25px;
+  padding:2px;
   color: #fff;
 }
 
@@ -211,8 +211,10 @@
 
 .event-delete-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns:240px 240px 240px 240px;
+  /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
   gap: 20px;
+  padding:10px;
 }
 
 .event-card {

@@ -58,12 +58,36 @@
 
 .create-btn:hover {
   opacity: 0.85;
+  background-color: #360227;
 }
 
 .nav-icon,
 .nav-avatar {
   color: #444;
   cursor: pointer;
+  position:relative;
+  transition:all 0.3s ease ;
+}
+.nav-icon::after{
+  height:2px;
+  content:"";
+  background-color:#8b1181;
+  left:0;
+  bottom:-3px;
+  width:0%;
+  position:relative;
+  transition:width 0.3s ease;
+}
+.nav-icon:hover{
+ color:rgb(117, 21, 117);
+ transform:scale(1,1);
+}
+.nav-icon:hover::after{
+  width:100%;
+}
+.nav-avatar:hover {
+  color: #8b1181;
+  transform:scale(1,1)
 }
 
 /* Mobile */

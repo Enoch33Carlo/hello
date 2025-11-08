@@ -89,10 +89,10 @@ content-area {
 }
 /* Grid Container */
 .card-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+   display: grid;
+  grid-template-columns:240px 240px 240px 240px;
   gap: 20px;
-  margin-top: 20px;
+
 }
 
 /* Individual Card */
