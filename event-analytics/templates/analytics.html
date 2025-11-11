@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Analytics</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background: #f9f9f9; 
+      margin: 0; 
+      padding: 0;
+    }
+
+    h1 { 
+      color: #333; 
+      margin-top: 30px; 
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 2 columns */
+      gap: 20px;
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .grid-item {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    hr {
+      width: 50%;
+      margin: 10px auto 20px auto;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Event Analytics Dashboard</h1>
+  <p>Visual insights based on events, finances, and registrations.</p>
+  <hr>
+
+  <div class="grid-container">
+
+    <div class="grid-item">
+      <h2>Revenue by Event</h2>
+      <img src="/static/revenue_by_event.png" alt="Revenue by Event">
+    </div>
+
+    <div class="grid-item">
+      <h2>Registrations by Event</h2>
+      <img src="/static/registrations_by_dept.png" alt="Registrations by Event">
+    </div>
+
+    <div class="grid-item">
+      <h2>Revenue vs Registrations</h2>
+      <img src="/static/revenue_vs_registrations.png" alt="Revenue vs Registrations">
+    </div>
+
+    <div class="grid-item">
+      <h2>Revenue Trend by Event</h2>
+      <img src="/static/revenue_trend.png" alt="Revenue Trend">
+    </div>
+
+    <div class="grid-item">
+      <h2>Top 5 Events by Registrations</h2>
+      <img src="/static/top5_registrations.png" alt="Top 5 Events by Registrations">
+    </div>
+
+    <div class="grid-item">
+      <h2>Revenue Share (Pie Chart)</h2>
+      <img src="/static/revenue_share.png" alt="Revenue Share by Event">
+    </div>
+
+    <div class="grid-item">
+      <h2>Revenue vs Registrations (Bars)</h2>
+      <img src="/static/revenue_vs_registrations_bar.png" alt="Revenue vs Registrations Bar">
+    </div>
+
+  </div>
+</body>
+</html>

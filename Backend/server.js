@@ -15,7 +15,8 @@ import { createServer } from "http";  // <-- add this
 import { Server } from "socket.io";   // <-- add this
 import RegistrationRoutes from "./routes/RegistrationRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
-
+import registrationRoutes from "./routes/registrationRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -318,6 +319,11 @@ app.post("/api/reports/generate", async (req, res) => {
     res.status(500).json({ message: "Error generating report" });
   }
 });
+//attendentce
+app.use("/api/registrations", registrationRoutes);
+
+//student Event Register
+app.use("/api/events", eventRoutes);
 
 // ✅ Start server
 const PORT = 5000;

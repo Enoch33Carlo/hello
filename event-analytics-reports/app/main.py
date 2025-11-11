@@ -42,7 +42,7 @@ def get_db():
         conn = mysql.connector.connect(
             host=os.getenv("DB_HOST", "localhost"),
             user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASSWORD", ""),
+            password=os.getenv("DB_PASSWORD", "M@rtes2121"),
             database=os.getenv("DB_NAME", "AI_Campus"),
         )
         return conn
@@ -147,6 +147,13 @@ def event_report_pdf(event_id: int):
         event = cursor.fetchone()
         if not event:
             raise HTTPException(status_code=404, detail="Event not found")
+
+
+
+
+
+
+
 
         cursor.execute(
             """

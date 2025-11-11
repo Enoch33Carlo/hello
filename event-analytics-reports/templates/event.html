@@ -40,6 +40,21 @@
       <p>{{ analytics.summary or analytics.raw }}</p>
     </section>
 
+    <section class="panel">
+  <h2>Data Visualization Summary</h2>
+  <a href="http://127.0.0.1:5001/" style="text-decoration:none;">Click to view the data</a>
+
+  <div id="imageContainer"></div>
+  </section>  
+
+ 
+
+  
+    
+  
+
+    
+
     {% if analytics.insights %}
     <section class="panel">
       <h2>Insights</h2>
@@ -53,7 +68,9 @@
 
     <section class="panel">
       <div class="panel-head">
+        
         <h2>Registrations</h2>
+        
         <a class="btn" href="/events/{{ event.event_id }}/report.pdf" target="_blank">Download PDF</a>
       </div>
       <div class="table-wrap">
@@ -84,5 +101,22 @@
       </div>
     </section>
   </main>
+  <script>
+const eventId = window.location.pathname.split("/").pop();
+
+fetch(`http://0.0.0.0:8000/events/${eventId}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("event-title").innerText = data.event_title;
+    document.getElementById("overview-img").src = data.overview_chart;
+    document.getElementById("dept-img").src = data.dept_chart;
+  })
+  .catch(err => console.error("Error loading analytics:", err));
+</script>
+
+<h2 id="event-title"></h2>
+<img id="overview-img" width="500">
+<img id="dept-img" width="500">
+
 </body>
 </html>

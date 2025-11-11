@@ -3,30 +3,30 @@ import db from "../db.js";
 
 const router = express.Router();
 
-// ✅ Get all finance data
-router.get("/", (req, res) => {
-  const sql = "SELECT * FROM finance ORDER BY id DESC";
-  db.query(sql, (err, results) => {
+// ✅ Add new finance record
+router.post("/add", (req, res) => {
+  const { eventId, eventName, cashCollected, onlineCollected } = req.body;
+
+  // Debug log (optional)
+  console.log("Received data:", req.body);
+
+  // Basic validation
+  if (cashCollected == null || onlineCollected == null) {
+    return res.status(400).json({ error: "Both cashCollected and onlineCollected are required." });
+  }
+
+  const sql = `
+    INSERT INTO finance (eventId, eventName, cashCollected, onlineCollected)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(sql, [eventId || null, eventName || null, cashCollected, onlineCollected], (err, result) => {
     if (err) {
-      console.error("❌ Error fetching finance data:", err);
+      console.error("❌ Error inserting finance data:", err);
       return res.status(500).json({ error: "Database error" });
     }
-    res.json(results);
-  });
-});
 
-// ✅ Update finance record
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
-  const { cashCollected, onlineCollected } = req.body;
-
-  const sql = "UPDATE finance SET cashCollected = ?, onlineCollected = ? WHERE id = ?";
-  db.query(sql, [cashCollected, onlineCollected, id], (err, result) => {
-    if (err) {
-      console.error("❌ Error updating finance:", err);
-      return res.status(500).json({ error: "Database error" });
-    }
-    res.json({ success: true, message: "Finance record updated successfully" });
+    res.json({ success: true, message: "✅ Finance data added successfully!" });
   });
 });
 

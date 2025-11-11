@@ -21,6 +21,7 @@ export default function Dashboard() {
   );
 
   return (
+    
     <div className="faculty-dashboard">
 
       
@@ -41,7 +42,7 @@ export default function Dashboard() {
                   <p>{event.category}</p>
                   <p>{event.date} — {event.time}</p>
                   <p>{event.location}</p>
-                  <a class="btn" href="http://0.0.0.0:8000/events/7">Open report</a>
+                  <a className="btn" href={`http://0.0.0.0:8000/events/${event.id}`}>Open report</a>
 
                 </div>
               </div>
